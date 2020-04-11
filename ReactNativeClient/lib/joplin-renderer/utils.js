@@ -122,7 +122,7 @@ utils.resourceStatus = function(ResourceModel, resourceInfo) {
 	return resourceStatus;
 };
 
-utils.imageReplacement = function(ResourceModel, src, resources, resourceBaseUrl) {
+utils.resourceReplacement = function(ResourceModel, src, resources, resourceBaseUrl) {
 	if (!ResourceModel) return null;
 
 	if (!ResourceModel.isResourceUrl(src)) return null;
@@ -138,12 +138,14 @@ utils.imageReplacement = function(ResourceModel, src, resources, resourceBaseUrl
 	}
 
 	const mime = resource.mime ? resource.mime.toLowerCase() : '';
-	if (ResourceModel.isSupportedImageMimeType(mime)) {
+	const type = ResourceModel.isSupportedMimeType(mime);
+	if (type != 'unknown') {
 		let newSrc = `./${ResourceModel.filename(resource)}`;
 		if (resourceBaseUrl) newSrc = resourceBaseUrl + newSrc;
 		return {
 			'data-resource-id': resource.id,
 			src: newSrc,
+			type: type,
 		};
 	}
 
