@@ -18,6 +18,7 @@ const rules = {
 	fountain: require('./MdToHtml/rules/fountain'),
 	mermaid: require('./MdToHtml/rules/mermaid').default,
 	video: require('./MdToHtml/rules/video'),
+	audio: require('./MdToHtml/rules/audio'),
 };
 
 const setupLinkify = require('./MdToHtml/setupLinkify');

@@ -191,7 +191,7 @@ class Resource extends BaseItem {
 		let tagAlt = resource.alt ? resource.alt : resource.title;
 		if (!tagAlt) tagAlt = '';
 		const lines = [];
-		if (Resource.isSupportedMimeType(resource.mime)) {
+		if (Resource.isSupportedMimeType(resource.mime) === 'image') {
 			lines.push('![');
 			lines.push(markdownUtils.escapeLinkText(tagAlt));
 			lines.push(`](:/${resource.id})`);

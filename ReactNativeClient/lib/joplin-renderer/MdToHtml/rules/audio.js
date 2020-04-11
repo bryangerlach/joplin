@@ -1,22 +1,20 @@
 // const Resource = require('lib/models/Resource.js');
 const utils = require('../../utils');
-const htmlUtils = require('../../htmlUtils.js');
 
 function installRule(markdownIt, mdOptions, ruleOptions) {
-	const defaultRender = markdownIt.renderer.rules.image;
+	const defaultRender = markdownIt.renderer.rules.link_open;
 
-	markdownIt.renderer.rules.image = (tokens, idx, options, env, self) => {
+	markdownIt.renderer.rules.link_open = (tokens, idx, options, env, self) => {
 		const Resource = ruleOptions.ResourceModel;
 
 		const token = tokens[idx];
-		const src = utils.getAttr(token.attrs, 'src');
-		const title = utils.getAttr(token.attrs, 'title');
+		const src = utils.getAttr(token.attrs, 'href');
 
 		if (!Resource.isResourceUrl(src) || ruleOptions.plainResourceRendering) return defaultRender(tokens, idx, options, env, self);
 
 		const r = utils.resourceReplacement(ruleOptions.ResourceModel, src, ruleOptions.resources, ruleOptions.resourceBaseUrl);
 		if (typeof r === 'string') return r;
-		if (r && r.type === 'image') return `<img data-from-md ${htmlUtils.attributesHtml(Object.assign({}, r, { title: title }))}/>`;
+		if (r && r.type === 'audio') return `<audio controls><source src='${r.src}'></audio><a href=# onclick=ipcProxySendToHost('joplin://${src.substring(2)}')>`;
 
 		return defaultRender(tokens, idx, options, env, self);
 	};
